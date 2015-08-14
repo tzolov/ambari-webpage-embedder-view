@@ -1,0 +1,120 @@
+buildscript {
+  repositories {
+    mavenCentral()
+    jcenter()
+  }
+  dependencies {
+    classpath("com.netflix.nebula:gradle-ospackage-plugin:2.2.6")
+    classpath("com.jfrog.bintray.gradle:gradle-bintray-plugin:1.2")
+  }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'os-package'
+apply plugin: 'rpm'
+apply plugin: 'distribution'
+apply plugin: 'com.jfrog.bintray'
+
+jar {
+  baseName = 'ambari-view-wrapper'
+  version = '0.0.2-SNAPSHOT'
+}
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+repositories { mavenCentral() }
+
+dependencies {
+  compile("com.sun.jersey:jersey-server:1.8")
+  compile("javax.inject:javax.inject:1")
+  compile("org.apache.ambari:ambari-views:1.7.0.0")
+}
+
+eclipse {
+  classpath {
+    containers.remove('org.eclipse.jdt.launching.JRE_CONTAINER')
+    containers 'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7'
+  }
+}
+
+ospackage {
+  version = jar.version.substring(0, jar.version.indexOf('-'))
+  release = 1
+  arch = NOARCH
+  os = LINUX
+  user 'root'
+  permissionGroup = 'root'
+  packageDescription = 'View Wrapper for Apache Ambari.'
+  packageGroup = 'Applications/Databases'
+  license = 'Apache License v2.0'
+
+  requires('ambari-server', '1.7', GREATER | EQUAL)
+  requires('python', '2.6', GREATER | EQUAL)
+}
+
+bintray {
+  user = System.getenv('BINTRAY_BIGDATA_USER')
+  key = System.getenv('BINTRAY_BIGDATA_KEY')
+
+  dryRun = false
+
+  filesSpec {
+    from ('build/distributions') { include '**/*.rpm' }
+    into jar.baseName
+  }
+
+  pkg {
+    repo = 'rpm'
+    name = jar.baseName
+    desc = 'Generi Ambari View for Apache Ambari'
+    licenses = ['Apache-2.0']
+    vcsUrl = 'https://github.com/tzolov/'
+    labels = [
+      'ambari',
+      'view',
+      'hadoop'
+    ]
+    publicDownloadNumbers = true
+    version {
+      name = ospackage.version + '-' + ospackage.release.toString()
+      desc = 'Ambari View Wrapper. It allows you to wrap existing web services and show them as Ambari Views'
+    }
+  }
+}
+
+// Enable this to include all dependecies in the target jar under /WEB-INF/lib
+//task copyLibs(type: Copy) {
+//  into "${buildDir}/output/WEB-INF/lib"
+//  from configurations.compile
+//}
+//processResources.dependsOn("copyLibs")
+//processResources {
+//  from "${buildDir}/output"
+//}
+
+
+// Ensure that ambari's view version is in synch with the gradle one
+processResources {
+  filesMatching('view.xml') {
+      filter {
+          it.replace('@VERSION@', jar.version.substring(0, jar.version.indexOf('-')))
+      }
+  }
+}
+
+task wrapper(type: Wrapper) { gradleVersion = '2.3' }
+
+buildRpm {
+  packageName = jar.baseName
+  from(jar.outputs.files) { into '/var/lib/ambari-server/resources/views' }
+}
+
+buildDeb {
+  packageName = jar.baseName
+  from(jar.outputs.files) { into '/var/lib/ambari-server/resources/views' }
+}
+
+bintrayUpload.dependsOn("buildRpm")
