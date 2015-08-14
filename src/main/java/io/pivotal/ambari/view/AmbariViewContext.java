@@ -26,14 +26,18 @@ import javax.ws.rs.core.UriInfo;
 import org.apache.ambari.view.ViewContext;
 
 /**
- * REST service that returns the back-end WebUI URL configured during the instantiation of the View.
+ * REST service that returns the view properties set during the instantiation of the View.
  */
-public class AmbariViewRestProxy {
+public class AmbariViewContext {
 
+  /**
+   * This view has single property backend.server.url used to point to the Web application being
+   * wrapped.
+   */
   private static final String BACKEND_REST_SERVER_URL = "backend.server.url";
 
   /**
-   * The Ambari view context.
+   * The Ambari View context.
    */
   @Inject
   ViewContext context;

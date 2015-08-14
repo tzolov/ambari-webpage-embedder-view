@@ -16,18 +16,18 @@ limitations under the License. Kerberos, LDAP, Custom. Binary/Htt
 -->
 <view>
   <name>VIEW_WRAPPER</name>
-  <label>View Wrapper</label>
+  <label>Ambari View Wrapper</label>
   <version>@VERSION@</version>
 
   <parameter>
     <name>backend.server.url</name>
-    <description>Full URL (e.g. http://phd1.localdomain:8088/cluster ) of the Web application being wrapped</description>
+    <description>Full URL (e.g. http://phd1.localdomain:8088/cluster )
+      of the Web application being wrapped</description>
     <required>true</required>
   </parameter>
 
   <resource>
-    <name>view-wrapper</name>
-    <service-class>io.pivotal.ambari.view.AmbariViewRestProxy
-    </service-class>
+    <name>view-context</name>
+    <service-class>io.pivotal.ambari.view.AmbariViewContext</service-class>
   </resource>
 </view>
