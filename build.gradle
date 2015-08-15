@@ -18,8 +18,8 @@ apply plugin: 'distribution'
 apply plugin: 'com.jfrog.bintray'
 
 jar {
-  baseName = 'ambari-view-wrapper'
-  version = '0.0.3-SNAPSHOT'
+  baseName = 'ambari-webpage-embedder-view'
+  version = '0.0.4-SNAPSHOT'
 }
 
 sourceCompatibility = 1.7

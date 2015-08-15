@@ -18,9 +18,8 @@ limitations under the License. Kerberos, LDAP, Custom. Binary/Htt
 <html>
 <head>
 <meta charset="utf-8">
-<title>Ambari Generic View</title>
+<title>Ambari Webpage Embedder View</title>
 <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
-
 <script type="text/javascript">
   $(function() {
     var parts = window.location.pathname.match(/\/[^\/]*/g);
@@ -28,21 +27,18 @@ limitations under the License. Kerberos, LDAP, Custom. Binary/Htt
     var version = '/versions' + parts[2];
     var instance = parts[3];
 
-    var viewUrl = '/api/v1/views' + view + version + '/instances' + instance
-        + '/resources/view-context';
-
-    console.log(viewUrl);
+    var viewUrl = '/api/v1/views' + view + version + '/instances' + instance + '/resources/view-context';
+    console.log("Webpage Embedder View URL: " + viewUrl);
 
     $.getJSON(viewUrl, function(data) {
       var obj = jQuery.parseJSON(data);
-      $('iframe').attr('src', obj.backendServerUrl);
+      $('iframe').attr('src', obj.webPageUrl);
     });
   });
 </script>
 </head>
 
 <body>
-	<iframe src="http://localhost:8080"
-		style="border: 0; position: fixed; top: 0; left: 0; right: 0; bottom: 0; width: 100%; height: 100%">
+	<iframe src="http://localhost:8080" style="border: 0; position: fixed; top: 0; left: 0; right: 0; bottom: 0; width: 100%; height: 100%"></iframe>
 </body>
 </html>

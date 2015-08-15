@@ -31,10 +31,9 @@ import org.apache.ambari.view.ViewContext;
 public class AmbariViewContext {
 
   /**
-   * This view has single property backend.server.url used to point to the Web application being
-   * wrapped.
+   * This view has single property embedded.webpage.url used to point to the web page being wrapped.
    */
-  private static final String BACKEND_REST_SERVER_URL = "backend.server.url";
+  private static final String EMBEDDED_WEBPAGE_URL = "embedded.webpage.url";
 
   /**
    * The Ambari View context.
@@ -45,11 +44,11 @@ public class AmbariViewContext {
   @GET
   @Path("/")
   @Produces({"text/plain", "application/json"})
-  public Response getRestServerUrl(@Context HttpHeaders headers, @Context UriInfo ui) {
+  public Response getWebPageUrl(@Context HttpHeaders headers, @Context UriInfo ui) {
 
-    String backendServerUrl = context.getProperties().get(BACKEND_REST_SERVER_URL);
+    String backendServerUrl = context.getProperties().get(EMBEDDED_WEBPAGE_URL);
 
-    String jsonResponse = String.format("{ \"backendServerUrl\" : \"%s\" }", backendServerUrl);
+    String jsonResponse = String.format("{ \"webPageUrl\" : \"%s\" }", backendServerUrl);
 
     return Response.ok(jsonResponse).build();
   }
