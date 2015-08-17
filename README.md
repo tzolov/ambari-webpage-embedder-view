@@ -4,7 +4,9 @@ This plugin helps to display external web pages content within Ambari. Implement
 
 Compatible with `Ambari` `1.7`, `2.0.x` and `2.1.x` and Stacks: `PHD3.0`, `HDP2.2x` and `HDP2.3`.
 
-> The [Embed Webpage Video](https://www.youtube.com/watch?v=BGPQjHYSVQk) illustrates the capabilities of the plugin
+[<img align="left" src="http://img.youtube.com/vi/BGPQjHYSVQk/3.jpg" alt="zeppelin-view" hspace="15" width="70"></img>](https://www.youtube.com/watch?v=BGPQjHYSVQk)
+The [Embed Webpage Video](https://www.youtube.com/watch?v=BGPQjHYSVQk) illustrates the capabilities of the plugin. It shows how to install it from an YUM repository and how to embed web application pages like Zeppelin, Spring XD Admin and HDFS explorer.
+
 
 ## Quick Start
 For RedHat/CentOS platforms install the `ambari-webpage-embedder-view`rpm from the [Big-Data](https://bintray.com/big-data/rpm) YUM repository and restart Ambari server.
